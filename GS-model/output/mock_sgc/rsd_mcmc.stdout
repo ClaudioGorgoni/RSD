@@ -1,0 +1,17 @@
+Running on 6 cores
+
+Finding optimal starting position for MCMC with PSO...
+converged after 93 iterations!
+best fit found:  10.0 [3.87446129 2.17627103 1.65308635 2.07300203 6.73664969 3.59368525]
+Time to maximize the Likelihood : 0.44 sec
+
+Initial position of the MCMC sampling:
+[3.87446129 2.17627103 1.65308635 2.07300203 6.73664969 3.59368525]
+MCMC sampler launched...
+
+Begin the burnin step...
+Time for the burn-in step : 0.24 sec
+
+Begin the mcmc sampling...
+Total time of the MCMC sampling : 2.35 sec
+

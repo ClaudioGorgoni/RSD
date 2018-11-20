@@ -1,0 +1,5 @@
+The fiducial value for the sound horizon rs_fid(zd) = 147.898 Mpc
+
+H(z)rs(zd)    = 7.849 10^3 (+21.997 / -3.085)
+D_A(z)/rs(zd) = 22.498 (+14.895 / -16.005)
+fs8(z)        = 0.883 (+0.868 / -0.584)
