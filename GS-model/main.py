@@ -59,15 +59,15 @@ print "Running on %d cores\n" % ncpu
 
 def get_samples(sampler_):
 	samples_ = sampler_.chain[:, :, :].reshape((-1, ndim))
-	chains_ = sampler_.chain[:, :, :]
+	chains_  = sampler_.chain[:, :, :]
 
 	return samples_, chains_
 
 
 
-def init_sampler(nparticles_, pso_init_, nwalkers_, guess_ = None):
+def init_sampler(nparticles_, pso_init_, my_guess_, nwalkers_, guess_ = None):
 
-	if pso_init_:
+	if not my_guess_:
 
 		print "Finding optimal starting position for MCMC with PSO..."
 		start = time.time()
@@ -160,7 +160,7 @@ if my_guess or pso_init:
 ### EXECUTE THE MAIN FUNCTION ###
 #################################
 
-p0      = init_sampler(nparticles, pso_init, nwalkers, guess_ = user_init)
+p0      = init_sampler(nparticles, pso_init, my_guess, nwalkers, guess_ = user_init)
 
 sampler = run_mcmc(p0, mcmc_steps, nwalkers, mcmc_burn)
 
