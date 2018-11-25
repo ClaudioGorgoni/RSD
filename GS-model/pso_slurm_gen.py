@@ -7,6 +7,9 @@ config = ConfigParser.ConfigParser()
 config.read("par.ini")
 
 label  = config.get('mcmc','label')
+queue  = config.get('slurm', 'queue')
+n      = config.getint('slurm', 'ncpus')
+
 output = 'output/'+label
 if not exists(output):
 	makedirs(output)
@@ -15,10 +18,10 @@ tmp = open('pso.slurm', 'w')
 
 content = ("#!/bin/bash\n\n"
 
-           "#SBATCH -p p4\n"
+           "#SBATCH -p "+queue+"\n"
            "#SBATCH --nodes=1\n"
            "#SBATCH --ntasks-per-node=1\n"
-           "#SBATCH --cpus-per-task=16\n"
+           "#SBATCH --cpus-per-task="+str(n)+"\n"
            "#SBATCH --exclusive\n"
            "#SBATCH -J pso\n"
            "#SBATCH -o " + output + "/pso.stdout\n"

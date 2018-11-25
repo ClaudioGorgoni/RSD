@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH -p s1
+#SBATCH -p p4
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=6
-#SBATCH --exclusive
+#SBATCH --cpus-per-task=16
+#SBATCH -t 02:00:00
 #SBATCH -J mcmc
-#SBATCH -o output/mock_sgc/rsd_mcmc.stdout
-#SBATCH -e output/mock_sgc/rsd_mcmc.stderr
+#SBATCH -o output/elg_sgc_bin5_nopeak/rsd_mcmc.stdout
+#SBATCH -e output/elg_sgc_bin5_nopeak/rsd_mcmc.stderr
 
 module unload mpi4py
 

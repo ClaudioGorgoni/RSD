@@ -1,13 +1,13 @@
 #!/bin/bash
 
-#SBATCH -p p4
+#SBATCH -p s2
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=16
+#SBATCH --cpus-per-task=12
 #SBATCH --exclusive
 #SBATCH -J pso
-#SBATCH -o output/elg_sgc/pso.stdout
-#SBATCH -e output/elg_sgc/pso.stderr
+#SBATCH -o output/elg_all_bin8/pso.stdout
+#SBATCH -e output/elg_all_bin8/pso.stderr
 
 module unload mpi4py
 

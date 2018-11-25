@@ -1,6 +1,6 @@
 import collections as collec
 import sys
-from multiprocessing import Pool, cpu_count
+from multiprocess import Pool, cpu_count
 
 import GS_sig_pi as gs
 import numpy as np
@@ -111,22 +111,22 @@ def xi_l(s, l, alpha_p, alpha_v, fz, sigma_FoG, F1, F2):
 
 	"""	
 	
-	if isinstance(s, (collec.Sequence, np.ndarray)):
+	#if isinstance(s, (collec.Sequence, np.ndarray)):
 
-		pool = Pool(cpu_count())
+	pool = Pool(cpu_count())
 
-		tmp  = [ (ss, l, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp  = [ (ss, l, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
 		
-		res  = np.array( pool.map(mu_integral, tmp) )
+	res  = np.array( pool.map(mu_integral, tmp) )
 
-		#res = np.array( map(mu_integral, tmp) )
+	#res = np.array( map(mu_integral, tmp) )
 		
-		pool.close()
-		pool.join()
+	pool.close()
+	pool.join()
 
-	else:
+	#else:
 
-		res = mu_integral((s, l, alpha_p, alpha_v, fz, sigma_FoG, F1, F2))
+	#	res = mu_integral((s, l, alpha_p, alpha_v, fz, sigma_FoG, F1, F2))
 
 	return res
 
@@ -137,29 +137,29 @@ def xi_02(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2):
 
 	"""	
 	
-	if isinstance(s, (collec.Sequence, np.ndarray)):
+	#if isinstance(s, (collec.Sequence, np.ndarray)):
 	
-		tmp =  [ (ss, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
-		tmp += [ (ss, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp =  [ (ss, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp += [ (ss, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
 		
-		pool = Pool(cpu_count())
+	pool = Pool(cpu_count())
 			
-		res  = np.array( pool.map( mu_integral, tmp) )
+	res  = np.array( pool.map( mu_integral, tmp) )
 			
-		pool.close()
-		pool.join()
+	pool.close()
+	pool.join()
 	
-	else:
+	#else:
 	
-		tmp  =  [ (s, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) ]
-		tmp  += [ (s, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) ]
+	#	tmp  =  [ (s, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) ]
+	#	tmp  += [ (s, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) ]
 		
-		pool = Pool()
+	#	pool = Pool()
 			
-		res  = np.array( pool.map( mu_integral, tmp) )
+	#	res  = np.array( pool.map( mu_integral, tmp) )
 			
-		pool.close()
-		pool.join()
+	#	pool.close()
+	#	pool.join()
 		
 	return res
 
@@ -170,30 +170,30 @@ def xi_024(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2):
 
 	"""
 
-	if isinstance(s, (collec.Sequence, np.ndarray)):
+	#if isinstance(s, (collec.Sequence, np.ndarray)):
 
-		tmp =  [(ss, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
-		tmp += [(ss, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
-		tmp += [(ss, 4, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp =  [(ss, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp += [(ss, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
+	tmp += [(ss, 4, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ss in s]
 
-		pool = Pool(cpu_count())
+	pool = Pool(cpu_count())
 
-		res = np.array( pool.map(mu_integral, tmp) )
+	res = np.array( pool.map(mu_integral, tmp) )
 
-		pool.close()
-		pool.join()
+	pool.close()
+	pool.join()
 
-	else:
+	#else:
 
-		tmp =  [(s, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
-		tmp += [(s, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
-		tmp += [(s, 4, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
+	#	tmp =  [(s, 0, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
+	#	tmp += [(s, 2, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
+	#	tmp += [(s, 4, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)]
 
-		pool = Pool()
+	#	pool = Pool()
 
-		res = np.array( pool.map(mu_integral, tmp) )
+	#	res = np.array( pool.map(mu_integral, tmp) )
 
-		pool.close()
-		pool.join()
+	#	pool.close()
+	#	pool.join()
 
 	return res

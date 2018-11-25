@@ -29,7 +29,7 @@ def peak_background_bias(nu):
 	
 	
 # ---- Invert the function ----
-nu     = np.linspace(0.,5.,10000)
+nu     = np.linspace(0.,5.,1000)
 f1, f2 = peak_background_bias(nu)
 
 tmp    = (f1 >= -0.2)

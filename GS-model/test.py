@@ -7,24 +7,17 @@ import matplotlib.pyplot as plt
 import numpy as np
 from GS_multi import xi_l, xi_02
 
-r = np.linspace(10,150,16)
+r = np.linspace(10,150,40)
 
-start = time.time()
-xi0 = xi_l(r, 0, 0.98, 1.0, 0.74, 3.5, 0.95, -0.1)
-xi2 = xi_l(r, 2, 0.98, 1.0, 0.74, 3.5, 0.95, -0.1)
-print xi0, xi2
-print time.time() - start
+xi0 = xi_l(r, 0, 1.0, 1.0, 0.82, 2.5, 0.4, -0.55)
+xi2 = xi_l(r, 2, 1.0, 1.0, 0.82, 2.5, 0.4, -0.55)
 
+s, xi0d, err0 = np.loadtxt('data/SGC_bin5_mean_xi0.dat', usecols=(0,1,2), unpack=True)
+xi2d, err2   = np.loadtxt('data/SGC_bin5_mean_xi2.dat', usecols=(1,2),   unpack=True)
 
-sys.exit()
-
-s, xi0d = np.loadtxt('../DR12/Cuesta_2016_CMASSDR12_corrfunction_x0_prerecon.dat', usecols=(0,1,), unpack=True)
-xi2d    = np.loadtxt('../DR12/Cuesta_2016_CMASSDR12_corrfunction_x2_prerecon.dat', usecols=(1,),   unpack=True)
-
-cov = np.loadtxt('../DR12/Cuesta_2016_CMASSDR12_corrfunction_cov_x0x2_prerecon.dat')
-err0 = np.sqrt(np.diag(cov[0:len(s),0:len(s)]))
-err2 = np.sqrt(np.diag(cov[len(s):2*len(s),len(s):2*len(s)]))
-
+#cov = np.loadtxt('data/SGC_bin5_cov_x0x2.dat')
+#err0 = np.sqrt(np.diag(cov[0:len(s),0:len(s)]))
+#err2 = np.sqrt(np.diag(cov[len(s):2*len(s),len(s):2*len(s)]))
 
 plt.figure()
 plt.plot(r,xi0*r*r,'r-',label='model')

@@ -65,14 +65,14 @@ def get_samples(sampler_):
 
 
 
-def init_sampler(nparticles_, nwalkers_, guess_ = None):
+def init_sampler(nparticles_, pso_init_, nwalkers_, guess_ = None):
 
-	if guess_ is None:
+	if pso_init_:
 
 		print "Finding optimal starting position for MCMC with PSO..."
 		start = time.time()
 
-		tmp = p0_init( nparticles_ )[0]
+		tmp = p0_init( nparticles_, pso_init_ , guess_ )[0]
 
 		print "Time to maximize the Likelihood : %.2f sec\n" % (time.time() - start)
 
@@ -134,6 +134,7 @@ nwalkers    = config.getint('mcmc','Nwalkers'      )
 
 # Load the user's initial guess
 my_guess    = config.getboolean('mcmc', 'my_guess'   )
+pso_init    = config.getboolean('mcmc', 'pso_init'   )
 nparticles  = config.getint(    'mcmc', 'Nparticles' )
 alpha_p_0   = config.getfloat(  'mcmc', 'alpha_p_0'  )
 alpha_v_0   = config.getfloat(  'mcmc', 'alpha_v_0'  )
@@ -146,7 +147,7 @@ F2_0        = config.getfloat(  'mcmc', 'F2_0'       )
 
 # The initial guess of the user (optional)
 user_init = None
-if my_guess:
+if my_guess or pso_init:
 	if peak_background:
 		user_init = [alpha_p_0, alpha_v_0, fz_0, F1_0, sigma_FoG_0]
 	else:
@@ -159,7 +160,7 @@ if my_guess:
 ### EXECUTE THE MAIN FUNCTION ###
 #################################
 
-p0      = init_sampler(nparticles, nwalkers, guess_ = user_init)
+p0      = init_sampler(nparticles, pso_init, nwalkers, guess_ = user_init)
 
 sampler = run_mcmc(p0, mcmc_steps, nwalkers, mcmc_burn)
 

@@ -19,6 +19,9 @@ if config.get('input', 'data_xi4') != '':
 	N_multi.append(4)
 N_multi.sort()
 
+cond0 = 0 in N_multi
+cond2 = 2 in N_multi
+cond4 = 4 in N_multi
 
 peak_background = config.getboolean('mcmc', 'peak_background')
 ndim = 0
@@ -133,28 +136,26 @@ def lnlike(theta):
 	res     : (float) the log-likelihood
 	"""
 	
-	# if peak_background:
-	#  	alpha_p, alpha_v, fz, F1, sigma_FoG     = theta
-	#  	F2 = Lagrangian_bias2(F1)
-	#
-	# else:
-	#  	alpha_p, alpha_v, fz, F1, F2, sigma_FoG = theta
-	#
-	#
-	# if 0 in N_multi and 2 in N_multi:
-	# 	multi_model = xi_02(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)
-	#
-	# elif 0 in N_multi and 2 in N_multi and 4 in N_multi:
-	# 	multi_model = xi_024(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)
-	#
-	# else:
-	# 	multi_model = np.hstack([ xi_l(s, ll, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ll in N_multi ])
-	#
-	#
-	# tmp = data - multi_model
-	#
-	# return - 0.5 * np.dot(tmp, np.dot(icov, tmp))
-	return 10.
+	if peak_background:
+		alpha_p, alpha_v, fz, F1, sigma_FoG     = theta
+		F2 = Lagrangian_bias2(F1)
+	
+	else:
+		alpha_p, alpha_v, fz, F1, F2, sigma_FoG = theta
+		
+	
+	if cond0 and cond2 and not cond4:
+		multi_model = xi_02(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)
+	
+	elif cond0 and cond2 and cond4:
+		multi_model = xi_024(s, alpha_p, alpha_v, fz, sigma_FoG, F1, F2)
+	
+	else:
+		multi_model = np.hstack([ xi_l(s, ll, alpha_p, alpha_v, fz, sigma_FoG, F1, F2) for ll in N_multi ])
+
+	tmp = data - multi_model
+	
+	return - 0.5 * np.dot(tmp, np.dot(icov, tmp))
 
 
 def lnprob(theta):
@@ -169,7 +170,7 @@ def lnprob(theta):
 		
 		
 		
-def p0_init(nparticles):
+def p0_init(nparticles, pso_init, guess):
 	"""
 	Maximize the Likelihood to start from an optimal position for the MCMC chain
 
@@ -196,6 +197,11 @@ def p0_init(nparticles):
 	
 
 	pso = ParticleSwarmOptimizer(lnprob, low=bnds_min, high=bnds_max, particleCount=nparticles)
+	
+	if pso_init and guess is not None:
+		pso.gbest.position = guess
+		pso.gbest.velocity = [0]*len(guess)
+		pso.gbest.fitness  = lnprob(guess)
 	
 	# sample the parameter space to find the max Likelihood
 	for swarm in pso.sample(maxIter=500):

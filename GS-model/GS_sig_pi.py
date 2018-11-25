@@ -18,18 +18,33 @@ min_r = min(r)
 max_r = max(r)
 
 sqrt2pi = np.sqrt( 2. * np.pi )
+myeps   = 1.e-12
 
+# THE CLPT OUTPUT
+tmp_f1  = np.loadtxt(xi_file, unpack=True)
+tmp_xi  = np.array( [tmp_f1[2], tmp_f1[3], tmp_f1[4], tmp_f1[5], tmp_f1[6], tmp_f1[7]] )
 
-def get_r(): return r
+tmp_f2  = np.loadtxt(v12_file, unpack=True)
+tmp_v12 = np.array( [tmp_f2[2], tmp_f2[3], tmp_f2[4], tmp_f2[5], tmp_f2[6]] )
 
+tmp_f3  = np.loadtxt(s12_file, usecols=(0, 1, 2, 3, 4), unpack=True)
+tmp_sp  = np.array( [tmp_f3[1], tmp_f3[2], tmp_f3[3], tmp_f3[4]] )
+
+tmp_f4  = np.loadtxt(s12_file, usecols=(0, 5, 6, 7, 8), unpack=True)
+tmp_sv  = np.array( [tmp_f4[1], tmp_f4[2], tmp_f4[3], tmp_f4[4]] )
+
+#-------------------------------------------------------------------
+
+def get_r(): 
+	return r
 
 
 def xi_r(f10, f01, f20, f11, f02):
 	"""read xi from file"""
+	
+	ff  = np.array( [1., f10, f01, f20, f11, f02] )
 
-	tmp = np.loadtxt(xi_file, unpack=True)
-
-	val = tmp[2] + f10 * tmp[3] + f01 * tmp[4] + f20 * tmp[5] + f11 * tmp[6] + f02 * tmp[7]
+	val = np.dot(ff, tmp_xi)
 
 	return np.insert(val, 0, val[0] * 1.5)
 
@@ -37,10 +52,10 @@ def xi_r(f10, f01, f20, f11, f02):
 
 def v12(f10, f01, f20, f11, f02):
 	"""read v12 from file"""
+	
+	ff  = np.array( [1., f10, f01, f20, f11] )
 
-	tmp = np.loadtxt(v12_file, unpack=True)
-
-	val = tmp[1] + f10 * tmp[2] + f01 * tmp[3] + f20 * tmp[4] + f11 * tmp[5] + f02 * tmp[6]
+	val = np.dot(ff, tmp_v12)
 
 	val = np.insert(val, 0, 0.)
 
@@ -55,10 +70,10 @@ def s12_par(f10, f01, f20, f11, f02):
 	read s12 from file
 	- parallel component
 	"""
+	
+	ff  = np.array( [1., f10, f01, f20] )
 
-	tmp = np.loadtxt(s12_file, usecols=(0, 1, 2, 3, 4), unpack=True)
-
-	val = tmp[1] + f10 * tmp[2] + f01 * tmp[3] + f20 * tmp[4]
+	val = np.dot(ff, tmp_sp)
 
 	val = np.insert(val, 0, val[0])
 
@@ -73,10 +88,10 @@ def s12_per(f10, f01, f20, f11, f02):
 	read s12 from file
 	- perpendicular component
 	"""
+	
+	ff  = np.array( [1., f10, f01, f20] )
 
-	tmp = np.loadtxt(s12_file, usecols=(0, 5, 6, 7, 8), unpack=True)
-
-	val = tmp[1] + f10 * tmp[2] + f01 * tmp[3] + f20 * tmp[4]
+	val = np.dot(ff, tmp_sv)
 
 	val = np.insert(val, 0, val[0])
 

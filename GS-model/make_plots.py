@@ -1,7 +1,7 @@
 import ConfigParser
 import cPickle as pickle
 
-from mcmc_plot_lib import write_chains, plot_chains, write_mcmc_results, write_science_results
+from plot_lib import write_chains, plot_chains, write_mcmc_results, write_science_results
 
 config = ConfigParser.ConfigParser()
 config.read("par.ini")
